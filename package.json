@@ -1,15 +1,36 @@
 {
-  "name": "dummy-api-server",
-  "version": "1.0.0",
-  "description": "",
+  "name": "drf-api-faker",
+  "version": "0.0.1",
+  "description": "Serve Django Rest Framework compliant dummy API responses for local development",
   "main": "server.js",
   "dependencies": {
     "json-server": "^0.14.2"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Praseetha-KR/drf-api-faker.git"
+  },
+  "keywords": [
+    "DRF",
+    "django-rest-framework",
+    "JSON",
+    "REST",
+    "API",
+    "mock",
+    "dummy",
+    "fake",
+    "data",
+    "prototyping",
+    "server"
+  ],
+  "author": "Praseetha KR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Praseetha-KR/drf-api-faker/issues"
+  },
+  "homepage": "https://github.com/Praseetha-KR/drf-api-faker"
 }
