@@ -5,8 +5,8 @@ const server = jsonServer.create()
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults({noCors: true})
 
-DEFAULT_LIMIT = process.env.DEFAULT_LIMIT || 10
-DEFAULT_OFFSET = process.env.DEFAULT_OFFSET || 0
+DEFAULT_LIMIT = process.env.DEFAULT_PAGINATION_LIMIT || 10
+DEFAULT_OFFSET = process.env.DEFAULT_PAGINATION_OFFSET || 0
 API_NAMESPACES = process.env.API_NAMESPACES || '/api/v1/*,/api/*'
 
 function getFullURL(req) {
