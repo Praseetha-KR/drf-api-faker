@@ -5,67 +5,62 @@ const server = jsonServer.create()
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults({noCors: true})
 
-function parseQueryStringToJson(query) {
-  if(!query) {
-    return {}
-  }
-
-	const pairs = query.split('&')
-	return pairs.reduce((c, p) => {
-		const [key, value] = p.split('=')
-		c[key] = value
-		return c
-	}, {})
+function getBaseURL(req) {
+  const root = url.format({
+    protocol: req.protocol,
+    host: req.get('host')
+  });
+  return `${root}${req.path}`;
 }
-
-// server.use((req, res, next) => {
-//   const query = url.parse(req.url).query
-//   req.query = parseQueryStringToJson(query)
-//   next()
-// })
-
-
 
 server.use(middlewares)
 server.use((req, res, next) => {
+  req._query ={}
   if (req.query) {
     req._query = Object.assign({}, req.query);
   }
-  // Continue to JSON Server router
   next()
 })
 
 router.render = function (req, res) {
   let _data = {}
-
   // GET
   if (req.method === 'GET') {
     _data = res.locals.data
-  }
+    const baseURL = getBaseURL(req)
+    const count = _data.length
+    let next = null
+    let prev = null
 
-  // POST, PUT, PATCH, DELETE, ...
+    if (res.statusCode === 200) {
+      let offset = parseInt(req._query.offset, 10) || 0
+      let limit = parseInt(req._query.limit, 10) || 10
+      let paginated_data = _data.slice(offset, offset + limit)
+
+      if ((offset + limit) < count) {
+        next = `?limit=${limit}&offset=${offset + limit}`
+      }
+      if (offset != 0) {
+        if ((offset - limit) > 0) {
+          prev = `?limit=${limit}&offset=${offset - limit}`
+        } else {
+          prev = `?limit=${limit}`
+        }
+      }
+
+      res.jsonp({
+        count: count,
+        prev: prev ? (baseURL + prev) : prev,
+        next: next ? (baseURL + next) : next,
+        results: paginated_data,
+      })
+    }
+  }
+  // POST, PUT, PATCH, DELETE
   else {
     _data = req.body
+    res.jsonp(_data)
   }
-
-  res.jsonp({
-    breq: req._query,
-    code: 0,
-    data: _data,
-    msg: 'success',
-  })
-//   var queryStrings = req.query
-//   debugger
-//   let data
-//   var offset = parseInt(queryStrings.offset, 10)
-//   var limit = parseInt(queryStrings.limit, 10)
-//   if (res.statusCode === 200) {
-//     data = {
-//       Result: "OK",
-//       Records: res.locals.data.slice(offset, offset + limit)
-//     }
-//   }
-//   res.json(data)
 }
 
 server.use(jsonServer.bodyParser)
@@ -78,5 +73,5 @@ server.use((req, res, next) => {
 server.use(router)
 
 server.listen(3000, () => {
-  console.log('JSON Server is running')
+  console.log('JSON Server is running at http://localhost:3000')
 })
