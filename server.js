@@ -2,12 +2,14 @@ const jsonServer = require('json-server')
 const path = require('path')
 const url = require('url')
 const server = jsonServer.create()
-const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults({noCors: true})
 
 DEFAULT_LIMIT = process.env.DEFAULT_PAGINATION_LIMIT || 10
 DEFAULT_OFFSET = process.env.DEFAULT_PAGINATION_OFFSET || 0
 API_NAMESPACES = process.env.API_NAMESPACES || '/api/v1/*,/api/*'
+DATA_FILE = process.env.DATA_FILE || 'db.json'
+
+const router = jsonServer.router(path.join(__dirname, DATA_FILE))
 
 function getFullURL(req) {
   const root = url.format({
