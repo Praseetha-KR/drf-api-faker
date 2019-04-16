@@ -1,0 +1,15 @@
+{
+  "name": "dummy-api-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "json-server": "^0.14.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
