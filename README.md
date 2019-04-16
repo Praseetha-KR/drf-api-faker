@@ -132,7 +132,7 @@ response:
   "title": "Title 1",
   "createdAt": 1555447152343,
   "userId": 1,
-  "comments: [
+  "comments": [
     {
       "text": "Comment Text 6",
       "createdAt": 1555447264637,
